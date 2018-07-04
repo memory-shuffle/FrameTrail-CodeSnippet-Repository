@@ -40,7 +40,22 @@ module.exports = (express, pool, adminPassword, debug) => {
                 return res.sendJSON({ error: 'error in database connection', message: err.message });
             });
 
-            req.database = connection;
+            if (debug) {
+
+                req.queryDatabase = function () {
+                    console.log(
+                        '\nSQL-QUERY', arguments[0],
+                        '\nSQL-PARAMS', arguments[1]
+                    );
+                    return connection.query.apply(connection, arguments);
+                };
+
+            } else {
+
+                req.queryDatabase = connection.query;
+
+            }
+
             res.on('finish', () => connection.release());
 
             next();
@@ -55,7 +70,13 @@ module.exports = (express, pool, adminPassword, debug) => {
     // add or modify a snippet (with HASHKEY or as admin)
     router.post('/post', (req, res) => {
 
-        req.database.query('SELECT ID, HASHKEY FROM SNIPPETS WHERE NAME = ?', [req.body.name], (err, rows) => {
+        if (!/^(\w|\d){3,255}$/g.test(req.body.name)) {
+            return res.sendJSON({
+                success: false, error: 'This name is not allowed'
+            });
+        }
+
+        req.queryDatabase('SELECT ID, HASHKEY FROM SNIPPETS WHERE NAME = ?', [req.body.name], (err, rows) => {
 
             if (err) {
                 return res.sendJSON({
@@ -66,15 +87,9 @@ module.exports = (express, pool, adminPassword, debug) => {
             if (rows.length === 0) {
                 // insert new snippet
 
-                if (!/^(\w|\d){3,255}$/g.test(req.body.name)) {
-                    return res.sendJSON({
-                        success: false, error: 'This name is not allowed'
-                    });
-                }
-
                 let hashkey = Math.random().toString().slice(2, 7);
 
-                req.database.query(
+                req.queryDatabase(
                     'INSERT INTO SNIPPETS(NAME, HASHKEY, PUBLIC, AUTHOR, SOURCE, DESCRIPTION, LICENSE, TAGS, CONTEXT, EVENTTYPE) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                     [
                         req.body.name,
@@ -110,7 +125,7 @@ module.exports = (express, pool, adminPassword, debug) => {
                 if (   req.body.adminPassword === adminPassword
                     || req.body.hashkey === rows[0]['HASHKEY']) {
 
-                        req.database.query(
+                        req.queryDatabase(
                             'UPDATE SNIPPETS SET AUTHOR = ?, SOURCE = ?, DESCRIPTION = ?, LICENSE = ?, TAGS = ?, CONTEXT = ?, EVENTTYPE = ? WHERE ID = ?',
                             [
                                 req.body.author || '',
@@ -332,7 +347,7 @@ module.exports = (express, pool, adminPassword, debug) => {
         // console.log(searchQuery);
         // console.log(searchParams);
 
-        req.database.query(searchQuery, searchParams, (err, rows) => {
+        req.queryDatabase(searchQuery, searchParams, (err, rows) => {
 
             if (err) {
                 return res.sendJSON({
@@ -376,7 +391,7 @@ module.exports = (express, pool, adminPassword, debug) => {
             });
         }
 
-        req.database.query(
+        req.queryDatabase(
             'SELECT ID, CREATED, MODIFIED, NAME, PUBLIC, AUTHOR, SOURCE, DESCRIPTION, LICENSE, TAGS, CONTEXT, EVENTTYPE FROM SNIPPETS WHERE ID = ?'
             + (req.body.adminPassword ? '' : ' AND PUBLIC = TRUE'),
             [id],
@@ -452,7 +467,7 @@ module.exports = (express, pool, adminPassword, debug) => {
             });
         }
 
-        req.database.query('DELETE FROM SNIPPETS WHERE ID = ?', [id], (err, rows) => {
+        req.queryDatabase('DELETE FROM SNIPPETS WHERE ID = ?', [id], (err, rows) => {
 
             if (err) {
                 return res.sendJSON({
@@ -490,7 +505,7 @@ module.exports = (express, pool, adminPassword, debug) => {
             });
         }
 
-        req.database.query('UPDATE SNIPPETS SET PUBLIC = ? WHERE ID = ?',
+        req.queryDatabase('UPDATE SNIPPETS SET PUBLIC = ? WHERE ID = ?',
             [!!req.body.public, id],
             (err, rows) => {
 

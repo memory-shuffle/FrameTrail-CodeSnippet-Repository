@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>FrameTrail CodeSnippet Repository</title>
+
+        <link rel="stylesheet" href="./style.css">
+
+        <script src="./jquery-3.3.1.min.js"></script>
+
+    </head>
+    <body>
+
+        <div id="LoginBox">
+            <h1>FrameTrail CodeSnippetRepository</h1>
+            <hr>
+            <pre id="LoginStatus">You are a guest.</pre>
+            <input type="text" id="inputAdminPassword">
+            <input type="button" id="LoginButton" value="Login Admin">
+            <input type="button" id="LogoutButton" value="Logout Admin">
+        </div>
+
+        <div id="postSnippet">
+            <h3>POST SNIPPET</h3>
+            <form>
+                <table>
+                    <tr><td>
+                        <label for="name">Name</label>
+                    </td><td>
+                        <input type="text" name="name">
+                    </td></tr>
+                    <tr><td>
+                        <label for="author">Author</label>
+                    </td><td>
+                        <input type="text" name="author">
+                    </td></tr>
+                    <tr><td>
+                        <label for="description">Description</label>
+                    </td><td>
+                        <textarea name="description" rows="8" cols="80"></textarea>
+                    </td></tr>
+                    <tr><td>
+                        <label for="source">Source</label>
+                    </td><td>
+                        <textarea name="source" rows="8" cols="80"></textarea>
+                    </td></tr>
+                    <tr><td>
+                        <label for="license">License</label>
+                    </td><td>
+                        <select name="license">
+                            <option value="gpl3">GPL 3</option>
+                            <option value="lgpl3">LGPL 3</option>
+                            <option value="mit">MIT</option>
+                        </select>
+                    </td></tr>
+                    <tr><td>
+                        <label for="tags">Tags</label>
+                    </td><td>
+                        <select name="tags" size="5" multiple="yes">
+                            <option value="effects">Effects</option>
+                            <option value="animation">Animation</option>
+                            <option value="userInput">User Input</option>
+                            <option value="dataScrubbing">Data Scrubbing</option>
+                            <option value="apiAccessToBigBadCorporations">APIs</option>
+                            <option value="storyTelling">Story Telling</option>
+                        </select>
+                    </td></tr>
+                    <tr><td>
+                        <label for="context">Context</label>
+                    </td><td>
+                        <select name="context">
+                            <option value="global">Global</option>
+                            <option value="overlay">Overlay</option>
+                        </select>
+                    </td></tr>
+                    <tr><td>
+                        <label for="eventtype">Event Type</label>
+                    </td><td>
+                        <select name="eventtype" size="5" multiple="yes">
+                            <option value="onClick">onClick</option>
+                            <option value="onHover">onHover</option>
+                            <option value="onKeypress">onKeypress</option>
+                            <option value="onMouseEnter">onMouseEnter</option>
+                            <option value="onMouseLeave">onMouseLeave</option>
+                            <option value="onCoffeeReady">onCoffeeReady</option>
+                        </select>
+                    </td></tr>
+                    <tr><td>
+                        <label for="hashkey">HASHKEY<br>(for update existing)</label>
+                    </td><td>
+                        <input type="text" name="hashkey">
+                    </td></tr>
+                </table>
+                <input type="submit" value="Post/Update this Snippet">
+                <input type="reset" value="Reset">
+                <hr>
+                <pre id="postAnswer"></pre>
+            </form>
+        </div>
+
+        <div id="searchSnippets">
+            <h3>SEARCH SNIPPET</h3>
+            <form>
+                <table>
+                    <tr><td>
+                        <label for="searchterm">Search term</label>
+                    </td><td>
+                        <input type="text" name="searchterm">
+                    </td></tr>
+                    <tr><td>
+                        <label for="searchfields">Search in fields</label>
+                    </td><td>
+                        <select name="searchfields" size="3" multiple="yes">
+                            <option value="name" selected>Name</option>
+                            <option value="author">Author</option>
+                            <option value="description">Description</option>
+                        </select>
+                    </td></tr>
+                    <tr><td>
+                        <label for="license">License</label>
+                    </td><td>
+                        <select name="license">
+                            <option value="">*</option>
+                            <option value="gpl3">GPL 3</option>
+                            <option value="lgpl3">LGPL 3</option>
+                            <option value="mit">MIT</option>
+                        </select>
+                    </td></tr>
+                    <tr><td>
+                        <label for="tags">Tags</label>
+                    </td><td>
+                        <select name="tags" size="5" multiple="yes">
+                            <option value="effects">Effects</option>
+                            <option value="animation">Animation</option>
+                            <option value="userInput">User Input</option>
+                            <option value="dataScrubbing">Data Scrubbing</option>
+                            <option value="apiAccessToBigBadCorporations">APIs</option>
+                            <option value="storyTelling">Story Telling</option>
+                        </select>
+                    </td></tr>
+                    <tr><td>
+                        <label for="context">Context</label>
+                    </td><td>
+                        <select name="context">
+                            <option value="">*</option>
+                            <option value="global">Global</option>
+                            <option value="overlay">Overlay</option>
+                        </select>
+                    </td></tr>
+                    <tr><td>
+                        <label for="eventtype">Event Type</label>
+                    </td><td>
+                        <select name="eventtype" size="5" multiple="yes">
+                            <option value="onClick">onClick</option>
+                            <option value="onHover">onHover</option>
+                            <option value="onKeypress">onKeypress</option>
+                            <option value="onMouseEnter">onMouseEnter</option>
+                            <option value="onMouseLeave">onMouseLeave</option>
+                            <option value="onCoffeeReady">onCoffeeReady</option>
+                        </select>
+                    </td></tr>
+                </table>
+                <input type="submit" value="Search for Snippet">
+                <input type="reset" value="Reset">
+                <hr>
+                <pre id="searchAnswer"></pre>
+            </form>
+        </div>
+
+        <div id="viewSnippet">
+            <h3>VIEW SNIPPET</h3>
+            <button id="resetViewSnippet">Reset</button>
+            <pre id="viewSnippetPort">
+            </pre>
+        </div>
+
+        <script src="./index.js"></script>
+
+    </body>
+</html>

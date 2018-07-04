@@ -1,0 +1,25 @@
+{
+  "name": "code-snippet-repository",
+  "version": "1.0.0",
+  "author": "Michael Zeder",
+  "license": "ISC",
+  "description": "A repository server for FrameTrail CodeSnippet.",
+  "config": {
+    "port": 3000,
+    "admin-password": "freund",
+    "debug": true,
+    "db-host": "localhost",
+    "db-port": null,
+    "db-user": "codesnippets",
+    "db-password": "Joscha123!",
+    "db-database": "codesnippets"
+  },
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "mysql": "^2.15.0",
+    "path": "^0.12.7"
+  }
+}

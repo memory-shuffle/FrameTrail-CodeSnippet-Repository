@@ -1,0 +1,36 @@
+body {
+    font-family: sans-serif;
+}
+
+#LoginBox {
+    width: 96%;
+    padding: 10px 20px;
+    border: 1px solid silver;
+    margin-bottom: 10px;
+}
+
+#postSnippet {
+    width: 96%;
+    padding: 10px 20px;
+    border: 1px solid silver;
+    margin-bottom: 10px;
+}
+
+#searchSnippets {
+    width: 96%;
+    padding: 10px 20px;
+    border: 1px solid silver;
+    margin-bottom: 10px;
+}
+
+#viewSnippet {
+    width: 96%;
+    padding: 10px 20px;
+    border: 1px solid silver;
+    margin-bottom: 10px;
+}
+
+#searchSnippets li {
+    margin: 4px;
+    cursor: pointer;
+}

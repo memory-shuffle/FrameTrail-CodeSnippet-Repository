@@ -36,9 +36,6 @@ module.exports = (express, pool, adminPassword, debug) => {
             if (err) {
                 return res.sendJSON({ error: 'error in database connection', message: err.message });
             }
-            connection.on('error', (err) => {
-                return res.sendJSON({ error: 'error in database connection', message: err.message });
-            });
 
             if (debug) {
 
@@ -87,7 +84,7 @@ module.exports = (express, pool, adminPassword, debug) => {
             if (rows.length === 0) {
                 // insert new snippet
 
-                let hashkey = Math.random().toString().slice(2, 7);
+                const hashkey = Math.random().toString().slice(2, 7);
 
                 req.queryDatabase(
                     'INSERT INTO SNIPPETS(NAME, HASHKEY, PUBLIC, AUTHOR, SOURCE, DESCRIPTION, LICENSE, TAGS, CONTEXT, EVENTTYPE) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -230,7 +227,7 @@ module.exports = (express, pool, adminPassword, debug) => {
                 searchQuery += 'WHERE '
             }
 
-            let searchLicenses = req.body.license.split(' ');
+            const searchLicenses = req.body.license.trim().split(' ');
             if (searchLicenses.length === 1) {
                 searchQuery += 'LICENSE LIKE ?';
                 searchParams.push('%' + searchLicenses[0] + '%');
@@ -256,7 +253,7 @@ module.exports = (express, pool, adminPassword, debug) => {
                 searchQuery += 'WHERE '
             }
 
-            let searchTags = req.body.tags.split(' ');
+            const searchTags = req.body.tags.trim().split(' ');
             if (searchTags.length === 1) {
                 searchQuery += 'TAGS LIKE ?';
                 searchParams.push('%' + searchTags[0] + '%');
@@ -282,7 +279,7 @@ module.exports = (express, pool, adminPassword, debug) => {
                 searchQuery += 'WHERE '
             }
 
-            let searchContexts = req.body.context.split(' ');
+            const searchContexts = req.body.context.trim().split(' ');
             if (searchContexts.length === 1) {
                 searchQuery += 'CONTEXT LIKE ?';
                 searchParams.push('%' + searchContexts[0] + '%');
@@ -308,7 +305,7 @@ module.exports = (express, pool, adminPassword, debug) => {
                 searchQuery += 'WHERE '
             }
 
-            let searchEventtypes = req.body.eventtype.split(' ');
+            const searchEventtypes = req.body.eventtype.trim().split(' ');
             if (searchEventtypes.length === 1) {
                 searchQuery += 'EVENTTYPE LIKE ?';
                 searchParams.push('%' + searchEventtypes[0] + '%');
@@ -383,7 +380,7 @@ module.exports = (express, pool, adminPassword, debug) => {
         }
 
 
-        let id = Number.parseInt(req.body.id);
+        const id = Number.parseInt(req.body.id);
 
         if (Number.isNaN(id)) {
             return res.sendJSON({
@@ -409,7 +406,7 @@ module.exports = (express, pool, adminPassword, debug) => {
                     });
                 }
 
-                let item = rows[0];
+                const item = rows[0];
                 res.sendJSON({
                     id: item.ID,
                     created: item.CREATED,
@@ -459,7 +456,7 @@ module.exports = (express, pool, adminPassword, debug) => {
             });
         }
 
-        let id = Number.parseInt(req.body.id);
+        const id = Number.parseInt(req.body.id);
 
         if (Number.isNaN(id)) {
             return res.sendJSON({
@@ -497,7 +494,7 @@ module.exports = (express, pool, adminPassword, debug) => {
             });
         }
 
-        let id = Number.parseInt(req.body.id);
+        const id = Number.parseInt(req.body.id);
 
         if (Number.isNaN(id)) {
             return res.sendJSON({

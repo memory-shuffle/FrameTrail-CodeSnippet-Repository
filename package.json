@@ -6,12 +6,12 @@
   "description": "A repository server for FrameTrail CodeSnippet.",
   "config": {
     "port": 3000,
-    "admin-password": "freund",
+    "admin-password": "xxxxx",
     "debug": true,
     "db-host": "localhost",
     "db-port": null,
-    "db-user": "codesnippets",
-    "db-password": "Joscha123!",
+    "db-user": "user3",
+    "db-password": "xxxxx",
     "db-database": "codesnippets"
   },
   "main": "server.js",

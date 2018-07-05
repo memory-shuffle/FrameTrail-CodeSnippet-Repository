@@ -11,24 +11,22 @@
 
     $('#searchSnippets form').on('reset', () => $('#searchAnswer').empty());
 
-    $('#resetViewSnippet').click(() => {
-        $('#viewSnippetPort').empty();
-    });
+    $('#resetViewSnippet').click(() => $('#viewSnippetPort').empty());
 
 
     $('#LoginButton').click(() => {
 
+        const userInput = $('#inputAdminPassword').val();
+
         $.post({
             url: '/api/isadmin',
-            data: JSON.stringify({
-                adminPassword: $('#inputAdminPassword').val()
-            }),
+            data: JSON.stringify({ adminPassword: userInput }),
             contentType: 'application/json'
         }).done(
             response => {
                 if (response.isadmin) {
                     $('#LoginStatus').text('You are admin.');
-                    adminPassword = $('#inputAdminPassword').val();
+                    adminPassword = userInput;
                 } else {
                     $('#LoginStatus').text('You are NOT admin.');
                     adminPassword = undefined;
@@ -72,8 +70,11 @@
             contentType: 'application/json'
         }).done(
             response => {
-                let resultView = $('#searchAnswer'),
-                    list = $('<ul></ul>');
+                if (response.error) {
+                    return $('#searchAnswer').empty().text(JSON.stringify(response, null, 4));
+                }
+                const resultView = $('#searchAnswer'),
+                      list = $('<ul></ul>');
                 resultView.empty().append(list);
                 for (let i in response) {
                     let listItem = $(
@@ -112,13 +113,11 @@
             response => {
                 $('#viewSnippetPort').text(JSON.stringify(response, null, 4));
                 if (adminPassword) {
-                    let buttonPublic = $('<button id="">Make Public (admin)</button>'),
-                        buttonPrivate = $('<button id="">Make Private (admin)</button>'),
-                        buttonDelete = $('<button id="">Delete (admin)</button>');
-                    $('#viewSnippetPort').append('<br>');
-                    $('#viewSnippetPort').append(buttonPublic);
-                    $('#viewSnippetPort').append(buttonPrivate);
-                    $('#viewSnippetPort').append(buttonDelete);
+                    const viewSnippetPort = $('#viewSnippetPort'),
+                          buttonPublic = $('<button id="">Make Public (admin)</button>'),
+                          buttonPrivate = $('<button id="">Make Private (admin)</button>'),
+                          buttonDelete = $('<button id="">Delete (admin)</button>');
+                    viewSnippetPort.append('<br>', buttonPublic, buttonPrivate, buttonDelete);
                     buttonPublic.click(() => makeSnippetPublic(id, true));
                     buttonPrivate.click(() => makeSnippetPublic(id, false));
                     buttonDelete.click(() => deleteSnippet(id));
@@ -149,7 +148,7 @@
                 }
             }
         ).fail(
-            error => $('#LoginStatus').text(JSON.stringify(error, null, 4))
+            error => $('#viewSnippetPort').text(JSON.stringify(error, null, 4))
         );
     }
 
@@ -158,8 +157,8 @@
         $.post({
             url: '/api/delete',
             data: JSON.stringify({
-                adminPassword: adminPassword,
-                id: id,
+                adminPassword,
+                id
             }),
             contentType: 'application/json'
         }).done(
@@ -179,8 +178,8 @@
 
     function serializeFormElement(formElement) {
 
-        let formArray = $(formElement).serializeArray(),
-            result = {};
+        const formArray = $(formElement).serializeArray(),
+              result = {};
 
         for (let i = 0, l = formArray.length; i < l; i++) {
 
